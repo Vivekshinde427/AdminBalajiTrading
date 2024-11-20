@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "643997160930",
+    "project_id": "balajitrading-b8211",
+    "storage_bucket": "balajitrading-b8211.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643997160930:android:d3766891b72be3346055bb",
+        "android_client_info": {
+          "package_name": "com.example.AdminBalajiTrading"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUaFXfM87arfMHm9QHS--PbVYvzBEibsE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
