@@ -1,5 +1,6 @@
 package com.example.AdminBalajiTrading.adpater
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import com.example.AdminBalajiTrading.databinding.DeliveryItemBinding
 class DeliveryAdapter(private  val customerNames:ArrayList<String>,private  val moneyStatus:ArrayList<String>): RecyclerView.Adapter<DeliveryAdapter.DeliveryViewHolder>() {
 
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeliveryViewHolder {
       val binding=DeliveryItemBinding.inflate(LayoutInflater.from(parent.context),parent,false)
         return DeliveryViewHolder(binding)
