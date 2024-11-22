@@ -17,19 +17,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <ImageButton
                 android:id="@+id/backButton"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_marginStart="8dp"
-
-                android:layout_marginTop="16dp"
                 android:background="@android:color/transparent"
-                android:scaleType="centerCrop"
                 android:src="@drawable/arrow_left"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,166 +39,65 @@
                 android:fontFamily="sans-serif-black"
                 android:text="Add Item"
                 android:textColor="@color/black"
-                android:textSize="40sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/backButton"
-                app:layout_constraintTop_toTopOf="@+id/backButton" />
+                android:textSize="40sp" />
 
             <EditText
-                android:id="@+id/foodName"
-                android:layout_width="0dp"
+                android:id="@+id/enterproductname"
+                android:layout_width="match_parent"
                 android:layout_height="57dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/edittextshape"
-                android:elevation="5dp"
-                android:fontFamily="sans-serif-medium"
                 android:hint="Enter Product Name"
-                android:inputType="text"
-                android:paddingLeft="15dp"
+                android:background="@drawable/edittextshape"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView18" />
+                android:paddingLeft="15dp" />
 
             <EditText
-                android:id="@+id/foodPrice"
-                android:layout_width="0dp"
+                android:id="@+id/enterproductprice"
+                android:layout_width="match_parent"
                 android:layout_height="57dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/edittextshape"
-                android:elevation="5dp"
-                android:fontFamily="sans-serif-medium"
                 android:hint="Enter Product Price"
-                android:inputType="text"
-                android:paddingLeft="15dp"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="@+id/foodName"
-                app:layout_constraintStart_toStartOf="@+id/foodName"
-                app:layout_constraintTop_toBottomOf="@+id/foodName" />
-
-            <TextView
-                android:id="@+id/selectImage"
-                android:layout_width="0dp"
-                android:layout_height="57dp"
-                android:layout_marginTop="24dp"
                 android:background="@drawable/edittextshape"
-                android:drawableRight="@drawable/pluse_round"
-                android:fontFamily="sans-serif"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
-                android:text="Select Image"
+                android:textSize="20sp"
+                android:paddingLeft="15dp" />
 
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/foodPrice"
-                app:layout_constraintStart_toStartOf="@+id/foodPrice"
-                app:layout_constraintTop_toBottomOf="@+id/foodPrice" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-
-                app:cardCornerRadius="15dp"
-                app:layout_constraintEnd_toEndOf="@+id/selectImage"
-                app:layout_constraintStart_toStartOf="@+id/selectImage"
-                app:layout_constraintTop_toBottomOf="@+id/selectImage">
-
-                <ImageView
-                    android:id="@+id/selectedImage"
-                    android:layout_width="175dp"
-                    android:layout_height="110dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/addimage"
-
-
-                    />
-
-
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:id="@+id/textView20"
+            <Spinner
+                android:id="@+id/categorySpinner"
                 android:layout_width="match_parent"
-                android:layout_height="47dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif-medium"
-
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"
-                android:text="Short Description"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="@+id/selectImage"
-                app:layout_constraintTop_toBottomOf="@+id/cardView2" />
+                android:layout_height="57dp"
+                android:background="@drawable/edittextshape"
+                android:paddingLeft="15dp" />
 
             <EditText
-                android:id="@+id/description"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@color/white"
-                android:fontFamily="sans-serif-medium"
-                android:text="Lorem ipsum dolor sit amet,
-consectetur adipiscing elit,
-sed do eiusmod tempor incididunt
-ut labore et dolore magna aliqua. Ut enim ad "
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/textView20"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/textView20"
-                app:layout_constraintTop_toBottomOf="@+id/textView20" />
-
-            <TextView
-                android:id="@+id/textView21"
+                android:id="@+id/customCategoryInput"
                 android:layout_width="match_parent"
-                android:layout_height="47dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center_vertical"
-                android:paddingLeft="15dp"
-                android:text="Ingrediants"
-                android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/description"
-                app:layout_constraintStart_toStartOf="@+id/description"
-                app:layout_constraintTop_toBottomOf="@+id/description" />
+                android:layout_height="57dp"
+                android:hint="Enter Custom Category"
+                android:visibility="gone"
+                android:background="@drawable/edittextshape"
+                android:paddingLeft="15dp" />
+
+            <Spinner
+                android:id="@+id/subcategorySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:background="@drawable/edittextshape"
+                android:paddingLeft="15dp" />
 
             <EditText
-                android:id="@+id/ingredient"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:background="@color/white"
-                android:text="Noddle\nSalad\nBurger\nHerbal\nPan Cake\nMomos"
-                app:layout_constraintEnd_toEndOf="@+id/cardView2"
-                app:layout_constraintStart_toStartOf="@+id/textView21"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                android:id="@+id/customSubcategoryInput"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:hint="Enter Custom Subcategory"
+                android:visibility="gone"
+                android:background="@drawable/edittextshape"
+                android:paddingLeft="15dp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/AddItemButton"
-                android:layout_width="157dp"
+                android:layout_width="match_parent"
                 android:layout_height="57dp"
-                android:background="@drawable/greenbuttonshape"
-                android:fontFamily="sans-serif-black"
                 android:text="Add Item"
-                android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="20sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ingredient" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:background="@drawable/greenbuttonshape" />
+        </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

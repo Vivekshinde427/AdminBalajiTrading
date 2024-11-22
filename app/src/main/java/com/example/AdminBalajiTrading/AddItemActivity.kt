@@ -1,87 +1,150 @@
 package com.example.AdminBalajiTrading
 
-import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.AdminBalajiTrading.databinding.ActivityAddItemBinding
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import java.net.URI
-import java.net.URL
+
+data class Product(
+    val productName: String = "",
+    val productPrice: String = "",
+    val category: String = "",
+    val subcategory: String = ""
+)
 
 class AddItemActivity : AppCompatActivity() {
-
-    private lateinit var foodName: String
-    private lateinit var foodPrice: String
-    private lateinit var foodDescription: String
-    private lateinit var foodIngrediant: String
-    private var foodImageURI: Uri? = null
-
-    private lateinit var auth: FirebaseAuth
-    private lateinit var database: FirebaseDatabase
-
-
     private val binding: ActivityAddItemBinding by lazy {
         ActivityAddItemBinding.inflate(layoutInflater)
     }
+
+    private val categories = listOf("Cements", "Paints", "Pipes", "Tanks", "Other")
+    private val subcategories = mapOf(
+        "Cements" to listOf("ACC cements", "Ultratech cements", "Ambuja cements", "Other"),
+        "Paints" to listOf("Asianpaints", "Indigo", "Berger", "Other"),
+        "Pipes" to listOf("Supreme", "Ashirwad", "Finolex", "Ajay", "Other"),
+        "Tanks" to listOf("Plasto", "Paras", "Tata", "Other"),
+        "Other" to emptyList()
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
+        setupSpinners()
+        setupListeners()
+    }
 
-        database = FirebaseDatabase.getInstance()
+    private fun setupSpinners() {
+        binding.categorySpinner.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            categories
+        ).apply {
+            setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        }
 
-        binding.AddItemButton.setOnClickListener{
+        binding.categorySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedCategory = categories[position]
+                    binding.customCategoryInput.visibility =
+                        if (selectedCategory == "Other") View.VISIBLE else View.GONE
+                    val subcategoryList = subcategories[selectedCategory] ?: emptyList()
+                    binding.subcategorySpinner.adapter = ArrayAdapter(
+                        this@AddItemActivity,
+                        android.R.layout.simple_spinner_item,
+                        subcategoryList
+                    ).apply {
+                        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    }
+                }
 
-            foodName = binding.foodName.text.toString().trim()
-            foodPrice = binding.foodPrice.text.toString().trim()
-            foodDescription = binding.description.text.toString().trim()
-            foodIngrediant = binding.ingredient.text.toString().trim()
-
-            if (!(foodName.isBlank()||foodPrice.isBlank()||foodDescription.isBlank()||foodIngrediant.isBlank())){
-                uploadData()
-                Toast.makeText(this,"Item Add Succesfully",Toast.LENGTH_SHORT).show()
-                finish()
-            }else{
-                Toast.makeText(this,"Fill all the details",Toast.LENGTH_SHORT).show()
-
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
-        }
-        binding.selectImage.setOnClickListener{
-            pickImage.launch("image/*")
-        }
+        binding.subcategorySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    val selectedSubcategory = binding.subcategorySpinner.selectedItem?.toString()
+                    binding.customSubcategoryInput.visibility =
+                        if (selectedSubcategory == "Other") View.VISIBLE else View.GONE
+                }
 
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+            }
+    }
+
+    private fun setupListeners() {
+        binding.AddItemButton.setOnClickListener {
+            val selectedCategory = binding.categorySpinner.selectedItem?.toString()
+            val selectedSubcategory = binding.subcategorySpinner.selectedItem?.toString()
+            val customCategory = binding.customCategoryInput.text.toString()
+            val customSubcategory = binding.customSubcategoryInput.text.toString()
+            val productName = binding.enterproductname.text.toString()
+            val productPrice = binding.enterproductprice.text.toString()
+
+            if (selectedCategory.isNullOrEmpty() || productName.isEmpty() || productPrice.isEmpty() ||
+                (selectedCategory == "Other" && customCategory.isEmpty())
+            ) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val categoryToSave =
+                if (selectedCategory == "Other") customCategory else selectedCategory
+            val subcategoryToSave = when {
+                selectedSubcategory.isNullOrEmpty() -> "Default Subcategory"
+                selectedSubcategory == "Other" && customSubcategory.isEmpty() -> {
+                    Toast.makeText(this, "Please enter a custom subcategory", Toast.LENGTH_SHORT)
+                        .show()
+                    return@setOnClickListener
+                }
+                selectedSubcategory == "Other" -> customSubcategory
+                else -> selectedSubcategory
+            }
+
+            val product = Product(
+                productName = productName,
+                productPrice = productPrice,
+                category = categoryToSave,
+                subcategory = subcategoryToSave
+            )
+
+            val database = FirebaseDatabase.getInstance()
+            val reference = database.getReference("products")
+
+            reference.push().setValue(product)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
+                    binding.enterproductname.text.clear()
+                    binding.enterproductprice.text.clear()
+                    binding.customCategoryInput.text.clear()
+                    binding.customSubcategoryInput.text.clear()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Failed to add product: ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
+                }
+        }
 
         binding.backButton.setOnClickListener {
             finish()
-        }
-
-    }
-
-    private fun uploadData() {
-
-        val menuRef =database.getReference("menu")
-        val newItemKey = menuRef.push().key
-
-        if (foodImageURI != null){
-            val storageRef = Firebase
-        }
-
-    }
-
-    private val pickImage =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri != null) {
-            binding.selectedImage.setImageURI(uri)
         }
     }
 }
