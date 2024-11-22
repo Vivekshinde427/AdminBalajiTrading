@@ -1,13 +1,22 @@
 package com.example.AdminBalajiTrading.adpater
 
-import android.content.Context
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.AdminBalajiTrading.PendingOrderActivity
 import com.example.AdminBalajiTrading.databinding.PendingOrdersItemsBinding
 
-class PendingOrderAdapter(private val customerNames:ArrayList<String>,private val quantity:ArrayList<String>,private val productImage:ArrayList<Int>,private val context:Context): RecyclerView.Adapter<PendingOrderAdapter.PendingOrderViewHolder>() {
+class PendingOrderAdapter(
+    private val context: PendingOrderActivity,
+    private val customerNames:MutableList<String>,
+    private val quantity: MutableList<String>,
+    private val productImage: MutableList<String>,
+   // private val itemClicked: OnItemClicked,
+): RecyclerView.Adapter<PendingOrderAdapter.PendingOrderViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PendingOrderViewHolder {
@@ -26,12 +35,14 @@ class PendingOrderAdapter(private val customerNames:ArrayList<String>,private va
 
     inner class PendingOrderViewHolder(private val binding:PendingOrdersItemsBinding):RecyclerView.ViewHolder(binding.root) {
         private var isAccepted=false
+        @SuppressLint("SetTextI18n")
         fun bind(position: Int) {
             binding.apply {
                 customerName.text=customerNames[position]
                 pendingOrderQuantity.text=quantity[position]
-                orderProductImage.setImageResource(productImage[position])
-
+                var uriString = productImage[position]
+                var uri= Uri.parse(uriString)
+                Glide.with(context).load(uri).into(orderProductImage)
                 orderAcceptButton.apply {
                     if(!isAccepted){
                         text="Accept"

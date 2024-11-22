@@ -61,7 +61,7 @@ dependencies {
     implementation(libs.firebase.auth)
 
     implementation(libs.play.services.auth) // For Google Sign-In
-
+    implementation(libs.glide)
 
     // Testing
     testImplementation(libs.junit)

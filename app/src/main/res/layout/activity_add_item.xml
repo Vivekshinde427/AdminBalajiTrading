@@ -47,7 +47,7 @@
                 app:layout_constraintTop_toTopOf="@+id/backButton" />
 
             <EditText
-                android:id="@+id/enterproductname"
+                android:id="@+id/foodName"
                 android:layout_width="0dp"
                 android:layout_height="57dp"
                 android:layout_marginStart="8dp"
@@ -65,7 +65,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
             <EditText
-                android:id="@+id/enterproductprice"
+                android:id="@+id/foodPrice"
                 android:layout_width="0dp"
                 android:layout_height="57dp"
                 android:layout_marginTop="24dp"
@@ -76,9 +76,9 @@
                 android:inputType="text"
                 android:paddingLeft="15dp"
                 android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="@+id/enterproductname"
-                app:layout_constraintStart_toStartOf="@+id/enterproductname"
-                app:layout_constraintTop_toBottomOf="@+id/enterproductname" />
+                app:layout_constraintEnd_toEndOf="@+id/foodName"
+                app:layout_constraintStart_toStartOf="@+id/foodName"
+                app:layout_constraintTop_toBottomOf="@+id/foodName" />
 
             <TextView
                 android:id="@+id/selectImage"
@@ -94,9 +94,9 @@
                 android:text="Select Image"
 
                 android:textColor="@color/black"
-                app:layout_constraintEnd_toEndOf="@+id/enterproductprice"
-                app:layout_constraintStart_toStartOf="@+id/enterproductprice"
-                app:layout_constraintTop_toBottomOf="@+id/enterproductprice" />
+                app:layout_constraintEnd_toEndOf="@+id/foodPrice"
+                app:layout_constraintStart_toStartOf="@+id/foodPrice"
+                app:layout_constraintTop_toBottomOf="@+id/foodPrice" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView2"
@@ -164,7 +164,7 @@ ut labore et dolore magna aliqua. Ut enim ad "
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center_vertical"
                 android:paddingLeft="15dp"
-                android:text="Short Description"
+                android:text="Ingrediants"
                 android:textColor="@color/black"
                 app:layout_constraintEnd_toEndOf="@+id/description"
                 app:layout_constraintStart_toStartOf="@+id/description"
