@@ -5,7 +5,6 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.AdminBalajiTrading.databinding.ActivityAddItemBinding
 import com.google.firebase.database.FirebaseDatabase
@@ -13,7 +12,6 @@ import com.google.firebase.database.FirebaseDatabase
 data class Product(
     val productName: String = "",
     val productPrice: String = "",
-    val category: String = "",
     val subcategory: String = ""
 )
 
@@ -33,7 +31,6 @@ class AddItemActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(binding.root)
 
         setupSpinners()
@@ -41,6 +38,7 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners() {
+        // Setup category spinner
         binding.categorySpinner.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
@@ -60,6 +58,7 @@ class AddItemActivity : AppCompatActivity() {
                     val selectedCategory = categories[position]
                     binding.customCategoryInput.visibility =
                         if (selectedCategory == "Other") View.VISIBLE else View.GONE
+
                     val subcategoryList = subcategories[selectedCategory] ?: emptyList()
                     binding.subcategorySpinner.adapter = ArrayAdapter(
                         this@AddItemActivity,
@@ -73,6 +72,7 @@ class AddItemActivity : AppCompatActivity() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
+        // Setup subcategory spinner
         binding.subcategorySpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -99,6 +99,7 @@ class AddItemActivity : AppCompatActivity() {
             val productName = binding.enterproductname.text.toString()
             val productPrice = binding.enterproductprice.text.toString()
 
+            // Validation
             if (selectedCategory.isNullOrEmpty() || productName.isEmpty() || productPrice.isEmpty() ||
                 (selectedCategory == "Other" && customCategory.isEmpty())
             ) {
@@ -106,6 +107,7 @@ class AddItemActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            // Determine final category and subcategory
             val categoryToSave =
                 if (selectedCategory == "Other") customCategory else selectedCategory
             val subcategoryToSave = when {
@@ -119,23 +121,21 @@ class AddItemActivity : AppCompatActivity() {
                 else -> selectedSubcategory
             }
 
+            // Create product object
             val product = Product(
                 productName = productName,
                 productPrice = productPrice,
-                category = categoryToSave,
                 subcategory = subcategoryToSave
             )
 
+            // Save to Firebase under the selected category
             val database = FirebaseDatabase.getInstance()
-            val reference = database.getReference("products")
+            val reference = database.getReference("products").child(categoryToSave)
 
             reference.push().setValue(product)
                 .addOnSuccessListener {
                     Toast.makeText(this, "Product added successfully!", Toast.LENGTH_SHORT).show()
-                    binding.enterproductname.text.clear()
-                    binding.enterproductprice.text.clear()
-                    binding.customCategoryInput.text.clear()
-                    binding.customSubcategoryInput.text.clear()
+                    clearFields()
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(this, "Failed to add product: ${e.message}", Toast.LENGTH_SHORT)
@@ -146,5 +146,12 @@ class AddItemActivity : AppCompatActivity() {
         binding.backButton.setOnClickListener {
             finish()
         }
+    }
+
+    private fun clearFields() {
+        binding.enterproductname.text.clear()
+        binding.enterproductprice.text.clear()
+        binding.customCategoryInput.text.clear()
+        binding.customSubcategoryInput.text.clear()
     }
 }

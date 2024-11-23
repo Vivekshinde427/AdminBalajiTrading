@@ -1,134 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="0dp"
-        app:cardCornerRadius="15dp"
-        android:elevation="2dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-
-
+    <TextView
+        android:id="@+id/productNameTextView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:text="Product Name"
+        android:textSize="18sp" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                app:cardCornerRadius="15dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+    <TextView
+        android:id="@+id/priceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Price"
+        android:textSize="16sp" />
 
-                <ImageView
-                    android:id="@+id/productImageView"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/pipes" />
+    <TextView
+        android:id="@+id/subcategoryTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subcategory"
+        android:textSize="14sp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-            </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/minusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-" />
 
-            <TextView
-                android:id="@+id/productNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="pipes"
+        <TextView
+            android:id="@+id/quantityTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1"
+            android:paddingHorizontal="16dp"
+            android:textSize="16sp" />
 
+        <Button
+            android:id="@+id/plusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+" />
 
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintStart_toEndOf="@+id/cardView8"
-                app:layout_constraintTop_toTopOf="@+id/cardView8"
-                app:layout_goneMarginStart="16dp" />
-
-            <TextView
-                android:id="@+id/priceTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="₹ 2000"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/cardView8"
-                app:layout_constraintStart_toEndOf="@+id/cardView8"
-                app:layout_constraintTop_toTopOf="@+id/cardView8"
-                app:layout_constraintVertical_bias="0.513"
-                app:layout_goneMarginStart="16dp" />
-
-
-
-            <ImageButton
-                android:id="@+id/minusButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/icon_minus"
-                android:background="@android:color/transparent"
-                app:layout_constraintBottom_toBottomOf="@+id/quantityTextView"
-                app:layout_constraintEnd_toStartOf="@+id/quantityTextView"
-                app:layout_constraintTop_toTopOf="@+id/quantityTextView" />
-
-            <ImageButton
-                android:id="@+id/plusButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/icon_plus"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/quantityTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10"
-                android:layout_marginEnd="8dp"
-
-                app:layout_constraintBottom_toBottomOf="@+id/plusButton"
-                app:layout_constraintEnd_toStartOf="@+id/plusButton"
-                app:layout_constraintTop_toTopOf="@+id/plusButton" />
-
-            <ImageButton
-                android:id="@+id/deleteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/trash"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-
-                android:background="@android:color/transparent"
-                app:layout_constraintEnd_toEndOf="@+id/plusButton"
-                app:layout_constraintStart_toStartOf="@+id/minusButton"
-                app:layout_constraintTop_toBottomOf="@+id/minusButton" />
-
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    </androidx.cardview.widget.CardView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:layout_marginStart="16dp" />
+    </LinearLayout>
+</LinearLayout>

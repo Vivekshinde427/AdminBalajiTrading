@@ -1,31 +1,57 @@
 package com.example.AdminBalajiTrading
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.AdminBalajiTrading.adpater.AddItemAdapter
-import com.example.AdminBalajiTrading.databinding.ActivityAllItemBinding
+import androidx.recyclerview.widget.RecyclerView
+import com.example.AdminBalajiTrading.adapter.AddItemAdapter
+import com.example.AdminBalajiTrading.model.AllMenu
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class AllItemActivity : AppCompatActivity() {
-    private val binding: ActivityAllItemBinding by lazy {
-        ActivityAllItemBinding.inflate(layoutInflater)
-    }
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var addItemAdapter: AddItemAdapter
+    private val menuItems = mutableListOf<AllMenu>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(binding.root)
-        val menuProductName= listOf("Fertilizers","Pesticides","Urea","Corn","Pesticides","Urea")
-        val menuItemPrice= listOf("₹5","₹6","₹7","₹5","₹6","₹7",)
-        val menuImage= listOf(R.drawable.pipes,R.drawable.kocide_3000,R.drawable.kocide_3000,R.drawable.pipes,R.drawable.kocide_3000,R.drawable.pipes)
-        binding.backButton.setOnClickListener {
-            finish()
-        }
+        setContentView(R.layout.activity_all_item)
 
-        val adapter=AddItemAdapter(ArrayList(menuProductName),ArrayList(menuItemPrice),ArrayList(menuImage))
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        binding.MenuRecyclerView.layoutManager=LinearLayoutManager(this)
-        binding.MenuRecyclerView.adapter=adapter
+        addItemAdapter = AddItemAdapter(menuItems)
+        recyclerView.adapter = addItemAdapter
 
-        }
+        fetchProductsFromFirebase()
     }
+
+    private fun fetchProductsFromFirebase() {
+        val database = FirebaseDatabase.getInstance()
+        val reference = database.getReference("products")
+
+        reference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                menuItems.clear()
+                for (subcategorySnapshot in snapshot.children) {
+                    for (productSnapshot in subcategorySnapshot.children) {
+                        val product = productSnapshot.getValue(AllMenu::class.java)
+                        if (product != null) {
+                            menuItems.add(product)
+                        }
+                    }
+                }
+                addItemAdapter.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@AllItemActivity, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+}
