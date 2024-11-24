@@ -2,9 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.gms.google.services) // Firebase plugin
-
 }
-
 
 android {
     namespace = "com.example.AdminBalajiTrading"
@@ -16,7 +14,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -35,7 +32,7 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11 // Upgraded to Java 11
+        sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
 
@@ -45,25 +42,29 @@ android {
 }
 
 dependencies {
-    // Firebase BOM to manage Firebase versions
-
-
+    // Firebase dependencies with BOM
     implementation(platform(libs.firebase.bom))
-    implementation(libs.google.firebase.analytics) // Firebase Analytics
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.auth)
 
-    // AndroidX and UI components
+    // RecyclerView dependency
+    implementation("androidx.recyclerview:recyclerview:1.2.1") // Add this line if not already in libs.versions.toml
+
+    // AndroidX libraries
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.auth)
 
-    implementation(libs.play.services.auth) // For Google Sign-In
+    // Play Services (For Google Sign-In)
+    implementation(libs.play.services.auth)
+
+    // Image loading library
     implementation(libs.glide)
 
-    // Testing
+    // Testing libraries
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

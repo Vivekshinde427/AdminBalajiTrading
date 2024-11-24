@@ -38,7 +38,6 @@ class AddItemActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners() {
-        // Setup category spinner
         binding.categorySpinner.adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item,
@@ -72,7 +71,6 @@ class AddItemActivity : AppCompatActivity() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
 
-        // Setup subcategory spinner
         binding.subcategorySpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(

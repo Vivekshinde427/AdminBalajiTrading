@@ -1,98 +1,43 @@
 package com.example.AdminBalajiTrading.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.AdminBalajiTrading.databinding.ItemItemBinding
 import com.example.AdminBalajiTrading.model.AllMenu
 
-class AddItemAdapter(
-    private val menuItems: MutableList<AllMenu>
-) : RecyclerView.Adapter<AddItemAdapter.AddItemViewHolder>() {
+class AddItemAdapter(private var menuItems: List<AllMenu>) : RecyclerView.Adapter<AddItemAdapter.ViewHolder>() {
 
-    private var itemQuantities = IntArray(menuItems.size) { 1 }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddItemViewHolder {
+    // Inflate the layout for each item
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        // Use the correct binding class (ItemItemBinding)
         val binding = ItemItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AddItemViewHolder(binding)
+        return ViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: AddItemViewHolder, position: Int) {
-        Log.d("AddItemAdapter", "onBindViewHolder called for position $position")
-        Log.d("AddItemAdapter", "menuItems size: ${menuItems.size}, itemQuantities size: ${itemQuantities.size}")
-
-        // Ensure itemQuantities is initialized properly based on menuItems size
-        if (itemQuantities.size != menuItems.size) {
-            Log.d("AddItemAdapter", "Initializing itemQuantities size: ${menuItems.size}")
-            itemQuantities = IntArray(menuItems.size) { 1 }
-        }
-
-        if (position >= menuItems.size || position >= itemQuantities.size) {
-            Log.e("AddItemAdapter", "Invalid position: $position")
-            return
-        }
-
-        holder.bind(position)
+    // Bind the data to the view
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = menuItems[position]
+        holder.bind(item)
     }
 
-    override fun getItemCount(): Int = menuItems.size
+    // Get the item count
+    override fun getItemCount(): Int {
+        return menuItems.size
+    }
 
-    // Update menu items and reset itemQuantities size accordingly
-    fun updateMenuItems(newItems: List<AllMenu>) {
-        Log.d("AddItemAdapter", "Updating menu items. New size: ${newItems.size}")
-        menuItems.clear()
-        menuItems.addAll(newItems)
-
-        // Reinitialize itemQuantities with the same size as menuItems, each set to 1
-        itemQuantities = IntArray(menuItems.size) { 1 }
+    // Update the list of products
+    fun updateMenuItems(newMenuItems: List<AllMenu>) {
+        menuItems = newMenuItems
         notifyDataSetChanged()
     }
 
-    inner class AddItemViewHolder(private val binding: ItemItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(position: Int) {
-            Log.d("AddItemAdapter", "Binding data at position $position")
-            if (position >= menuItems.size || position >= itemQuantities.size) {
-                Log.e("AddItemAdapter", "Invalid position during bind: $position")
-                return
-            }
-
-            val item = menuItems[position]
-            binding.apply {
-                productNameTextView.text = item.productName.ifEmpty { "Unknown Product" }
-                priceTextView.text = item.productPrice.ifEmpty { "N/A" }
-                subcategoryTextView.text = item.subcategory.ifEmpty { "Uncategorized" }
-                quantityTextView.text = itemQuantities[position].toString()
-
-                plusButton.setOnClickListener { increaseQuantity(position) }
-                minusButton.setOnClickListener { decreaseQuantity(position) }
-                deleteButton.setOnClickListener { deleteItem(position) }
-            }
-        }
-
-        private fun increaseQuantity(position: Int) {
-            if (position < itemQuantities.size && itemQuantities[position] < 10) {
-                itemQuantities[position]++
-                notifyItemChanged(position)
-            }
-        }
-
-        private fun decreaseQuantity(position: Int) {
-            if (position < itemQuantities.size && itemQuantities[position] > 1) {
-                itemQuantities[position]--
-                notifyItemChanged(position)
-            }
-        }
-
-        private fun deleteItem(position: Int) {
-            if (position < menuItems.size && position < itemQuantities.size) {
-                menuItems.removeAt(position)
-                itemQuantities = itemQuantities.copyOfRange(0, menuItems.size) // Remove quantity for deleted item
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position, itemCount)
-            }
+    // ViewHolder class to bind the data
+    inner class ViewHolder(private val binding: ItemItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(menuItem: AllMenu) {
+            binding.productNameTextView.text = menuItem.productName
+            binding.priceTextView.text = menuItem.productPrice
+            binding.subcategoryTextView.text = menuItem.subcategory
         }
     }
 }
